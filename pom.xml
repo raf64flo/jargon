@@ -442,5 +442,6 @@
 		<module>jargon-httpstream</module>
 		<module>jargon-user-profile</module>
 		<module>jargon-ruleservice</module>
+		<module>jargon-pool</module>
 	</modules>
 </project>
