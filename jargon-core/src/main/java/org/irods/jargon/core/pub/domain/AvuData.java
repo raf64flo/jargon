@@ -34,8 +34,8 @@ public final class AvuData extends IRODSDomainObject {
 	 *            <code>String</code> with AVU unit.
 	 * @throws JargonException
 	 */
-	public static AvuData instance(final String attribute, final String value,
-			final String unit) throws JargonException {
+	public static AvuData instance(final String attribute, final String value, final String unit)
+			throws JargonException {
 		return new AvuData(attribute, value, unit);
 	}
 
@@ -54,19 +54,17 @@ public final class AvuData extends IRODSDomainObject {
 	 *            <code>String</code> with AVU unit.
 	 * @throws JargonException
 	 */
-	public AvuData(final String attribute, final String value, final String unit)
-			throws JargonException {
+	public AvuData(final String attribute, final String value, final String unit) throws JargonException {
 		if (attribute == null || attribute.isEmpty()) {
 			throw new JargonException("attribute is null or empty");
 		}
 
-		if (value == null || value.isEmpty()) {
+		if (value == null) {
 			throw new JargonException("value is null or empty");
 		}
 
 		if (unit == null) {
-			throw new JargonException(
-					"unit is null, leave blank String if empty");
+			throw new JargonException("unit is null, leave blank String if empty");
 		}
 
 		this.attribute = attribute;
@@ -119,8 +117,7 @@ public final class AvuData extends IRODSDomainObject {
 		}
 
 		AvuData other = (AvuData) obj;
-		return (attribute.equals(other.attribute) && value.equals(other.value) && unit
-				.equals(other.unit));
+		return (attribute.equals(other.attribute) && value.equals(other.value) && unit.equals(other.unit));
 	}
 
 	@Override
