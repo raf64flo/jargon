@@ -17,6 +17,7 @@ of use cases for general cases, and having a separate stream allows us flexibili
 Please go to [[https://github.com/DICE-UNC/jargon]] for the latest news and info.
 
 =======
+
 Jargon-core consists of the following libraries
 
 * jargon-core - base libraries, implementation of the iRODS protocol
@@ -26,12 +27,13 @@ Jargon-core consists of the following libraries
 * jargon-ticket - support for ticket processing
 * jargon-httpstream - stream http content into iRODS via Jargon
 * jargon-ruleservice - support for running and managing rules from interfaces
-
+* jargon-pool - initial implementation of commons-pool caching of iRODS agent connections.  This is initially for WebDav, and will be utilized as an option in REST and cloud browser.  Consider this code experimental
+ 
 ## Requirements
 
 * Jargon depends on Java 1.8+
 * Jargon is built using Apache Maven2, see POM for dependencies
-* Jargon supports iRODS 3.0 through 4.2.0
+* Jargon supports iRODS 4.1.0 through 4.2.X
 
 ## Libraries
 
