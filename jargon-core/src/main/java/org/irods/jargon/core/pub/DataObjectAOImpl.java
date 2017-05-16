@@ -45,7 +45,6 @@ import org.irods.jargon.core.pub.domain.Resource;
 import org.irods.jargon.core.pub.domain.UserFilePermission;
 import org.irods.jargon.core.pub.io.IRODSFile;
 import org.irods.jargon.core.query.AVUQueryElement;
-import org.irods.jargon.core.query.AVUQueryOperatorEnum;
 import org.irods.jargon.core.query.GenQueryBuilderException;
 import org.irods.jargon.core.query.GenQueryOrderByField.OrderByType;
 import org.irods.jargon.core.query.IRODSGenQueryBuilder;
@@ -1555,8 +1554,10 @@ public final class DataObjectAOImpl extends FileCatalogObjectAOImpl implements
 					FileRestartInfo fileRestartInfo = retrieveRestartInfoIfAvailable(
 							RestartType.GET, irodsFileToGet.getAbsolutePath());
 					if (fileRestartInfo == null) {
-						log.info("no restart info available, rethrow the exception");
-						throw e;
+						log.error(
+								" exception in get transfer, currently restart is not supported for get",
+								e);
+						throw new JargonException(e);
 					} else {
 						log.info("carrying out restart process..");
 						getRestartRetryTillMaxLoop(transferControlBlock,
@@ -3121,13 +3122,6 @@ public final class DataObjectAOImpl extends FileCatalogObjectAOImpl implements
 
 	}
 
-	/**
-	 * @param irodsFile
-	 * @param checksumEncoding
-	 * @return
-	 * @throws JargonException
-	 * @deprecated see {@link DataObjectChecksumUtilitiesAO} for new location
-	 */
 	@Deprecated
 	@Override
 	public ChecksumValue computeChecksumOnDataObject(final IRODSFile irodsFile)
@@ -3775,10 +3769,10 @@ public final class DataObjectAOImpl extends FileCatalogObjectAOImpl implements
 		try {
 			queryElements.add(AVUQueryElement.instanceForValueQuery(
 					AVUQueryElement.AVUQueryPart.ATTRIBUTE,
-					AVUQueryOperatorEnum.EQUAL, avuData.getAttribute()));
+					QueryConditionOperators.EQUAL, avuData.getAttribute()));
 			queryElements.add(AVUQueryElement.instanceForValueQuery(
 					AVUQueryElement.AVUQueryPart.UNITS,
-					AVUQueryOperatorEnum.EQUAL, avuData.getUnit()));
+					QueryConditionOperators.EQUAL, avuData.getUnit()));
 			result = this.findMetadataValuesForDataObjectUsingAVUQuery(
 					queryElements, absolutePath);
 		} catch (JargonQueryException e) {

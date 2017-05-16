@@ -4,6 +4,7 @@
 package org.irods.jargon.core.utils;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.irods.jargon.core.exception.JargonException;
@@ -29,12 +30,12 @@ public class AccessObjectQueryProcessingUtils {
 
 	/**
 	 * @param resultSet
-	 * @return
+	 * @return <code>List</code> of {@link AvuData}
 	 * @throws JargonException
 	 */
 	public static List<AvuData> buildAvuDataListFromResultSet(
 			final IRODSQueryResultSetInterface resultSet)
-					throws JargonException {
+			throws JargonException {
 		final List<AvuData> avuDatas = new ArrayList<AvuData>();
 		AvuData avuData = null;
 
@@ -59,13 +60,13 @@ public class AccessObjectQueryProcessingUtils {
 	/**
 	 * @param metaDataDomain
 	 * @param irodsQueryResultSet
-	 * @return
+	 * @return <code>List</code> of {@link MetaDataAndDomainData}
 	 * @throws JargonException
 	 */
 	public static List<MetaDataAndDomainData> buildMetaDataAndDomainDatalistFromResultSet(
 			final MetadataDomain metaDataDomain,
 			final IRODSQueryResultSetInterface irodsQueryResultSet)
-					throws JargonException {
+			throws JargonException {
 		if (metaDataDomain == null) {
 			throw new JargonException("null metaDataDomain");
 		}
@@ -77,9 +78,9 @@ public class AccessObjectQueryProcessingUtils {
 		List<MetaDataAndDomainData> metaDataResults = new ArrayList<MetaDataAndDomainData>();
 		for (IRODSQueryResultRow row : irodsQueryResultSet.getResults()) {
 			metaDataResults
-			.add(buildMetaDataAndDomainDataFromResultSetRow(
-					metaDataDomain, row,
-					irodsQueryResultSet.getTotalRecords()));
+					.add(buildMetaDataAndDomainDataFromResultSetRow(
+							metaDataDomain, row,
+							irodsQueryResultSet.getTotalRecords()));
 		}
 
 		return metaDataResults;
@@ -89,30 +90,31 @@ public class AccessObjectQueryProcessingUtils {
 	 * @param metadataDomain
 	 * @param row
 	 * @param totalRecordCount
-	 * @return
+	 * @return {@link MetaDataAndDomainData}
 	 * @throws JargonException
 	 */
 	public static MetaDataAndDomainData buildMetaDataAndDomainDataFromResultSetRow(
 			final MetaDataAndDomainData.MetadataDomain metadataDomain,
 			final IRODSQueryResultRow row, final int totalRecordCount)
-					throws JargonException {
+			throws JargonException {
 
 		String domainId = row.getColumn(0);
 		String domainUniqueName = row.getColumn(1);
+		Date createdDate = row.getColumnAsDateOrNull(2);
+		Date modifiedDate = row.getColumnAsDateOrNull(3);
 		String attributeName = row.getColumn(4);
 		String attributeValue = row.getColumn(5);
 		String attributeUnits = row.getColumn(6);
 		int attributeId = row.getColumnAsIntOrZero(7);
 
 		MetaDataAndDomainData data = MetaDataAndDomainData.instance(
-				metadataDomain, domainId, domainUniqueName, 0L,
-				row.getColumnAsDateOrNull(2), row.getColumnAsDateOrNull(3),
-				attributeId, attributeName, attributeValue, attributeUnits);
+				metadataDomain, domainId, domainUniqueName, 0L, createdDate,
+				modifiedDate, attributeId, attributeName, attributeValue,
+				attributeUnits);
 		data.setCount(row.getRecordCount());
 		data.setLastResult(row.isLastResult());
 		data.setTotalRecords(totalRecordCount);
 		log.debug("metadataAndDomainData: {}", data);
 		return data;
 	}
-
 }

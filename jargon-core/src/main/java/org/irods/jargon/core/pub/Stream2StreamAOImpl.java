@@ -18,6 +18,7 @@ import org.irods.jargon.core.connection.IRODSAccount;
 import org.irods.jargon.core.connection.IRODSSession;
 import org.irods.jargon.core.exception.JargonException;
 import org.irods.jargon.core.exception.NoResourceDefinedException;
+import org.irods.jargon.core.packinstr.DataObjInp.OpenFlags;
 import org.irods.jargon.core.pub.io.IRODSFile;
 import org.irods.jargon.core.pub.io.IRODSFileOutputStream;
 import org.irods.jargon.core.utils.ChannelTools;
@@ -34,7 +35,7 @@ import org.slf4j.LoggerFactory;
  *
  */
 public class Stream2StreamAOImpl extends IRODSGenericAO implements
-Stream2StreamAO {
+		Stream2StreamAO {
 
 	// private final int bufferSize = this.getJargonProperties().get
 	private static final int bufferSize = 32 * 1024; // FIXME: temp code
@@ -49,7 +50,7 @@ Stream2StreamAO {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see
 	 * org.irods.jargon.core.pub.Stream2StreamAO#streamBytesToIRODSFile(byte[],
 	 * org.irods.jargon.core.pub.io.IRODSFile)
@@ -66,15 +67,12 @@ Stream2StreamAO {
 			throw new IllegalArgumentException("null irodsTargetFile");
 		}
 
-		// delete the target file for overwrite
-
-		irodsTargetFile.delete();
-
 		log.info("streamBytesToIRODSFile(), irodsFile:{}", irodsTargetFile);
 		log.info("bytesToStream length:{}", bytesToStream.length);
 
 		OutputStream ifOs = getIRODSFileFactory()
-				.instanceIRODSFileOutputStream(irodsTargetFile);
+				.instanceIRODSFileOutputStream(irodsTargetFile,
+						OpenFlags.WRITE_TRUNCATE);
 		InputStream bis = new ByteArrayInputStream(bytesToStream);
 
 		final ReadableByteChannel inputChannel = Channels.newChannel(bis);
@@ -98,7 +96,7 @@ Stream2StreamAO {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see
 	 * org.irods.jargon.core.pub.Stream2StreamAO#transferStreamToFileUsingIOStreams
 	 * (java.io.InputStream, java.io.File, long, int)
@@ -107,7 +105,7 @@ Stream2StreamAO {
 	public TransferStatistics transferStreamToFileUsingIOStreams(
 			final InputStream inputStream, final File targetFile,
 			final long length, final int readBuffSize)
-					throws NoResourceDefinedException, JargonException {
+			throws NoResourceDefinedException, JargonException {
 
 		// FIXME: deprecate length, not needed
 
@@ -257,7 +255,7 @@ Stream2StreamAO {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see
 	 * org.irods.jargon.core.pub.Stream2StreamAO#streamToStreamCopyUsingStandardIO
 	 * (java.io.InputStream, java.io.OutputStream)
@@ -265,7 +263,7 @@ Stream2StreamAO {
 	@Override
 	public TransferStatistics streamToStreamCopyUsingStandardIO(
 			final InputStream inputStream, final OutputStream outputStream)
-					throws JargonException {
+			throws JargonException {
 
 		log.info("streamToStreamCopyUsingStandardIO()");
 
@@ -298,7 +296,7 @@ Stream2StreamAO {
 		}
 
 		final byte[] buffer = new byte[getJargonProperties()
-		                               .getInputToOutputCopyBufferByteSize()];
+				.getInputToOutputCopyBufferByteSize()];
 
 		log.info("buffer length for read/write will be:{}", buffer.length);
 
@@ -345,7 +343,7 @@ Stream2StreamAO {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see
 	 * org.irods.jargon.core.pub.Stream2StreamAO#streamToStreamCopy(java.io.
 	 * InputStream, java.io.OutputStream)
@@ -388,7 +386,7 @@ Stream2StreamAO {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see
 	 * org.irods.jargon.core.pub.Stream2StreamAO#streamFileToByte(org.irods.
 	 * jargon.core.pub.io.IRODSFile)
@@ -437,7 +435,7 @@ Stream2StreamAO {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see
 	 * org.irods.jargon.core.pub.Stream2StreamAO#streamClasspathResourceToIRODSFile
 	 * (java.lang.String, java.lang.String)

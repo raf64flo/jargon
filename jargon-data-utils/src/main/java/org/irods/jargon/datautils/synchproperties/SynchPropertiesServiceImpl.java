@@ -15,9 +15,9 @@ import org.irods.jargon.core.pub.domain.AvuData;
 import org.irods.jargon.core.pub.io.IRODSFile;
 import org.irods.jargon.core.query.AVUQueryElement;
 import org.irods.jargon.core.query.AVUQueryElement.AVUQueryPart;
-import org.irods.jargon.core.query.AVUQueryOperatorEnum;
 import org.irods.jargon.core.query.JargonQueryException;
 import org.irods.jargon.core.query.MetaDataAndDomainData;
+import org.irods.jargon.core.query.QueryConditionOperators;
 import org.irods.jargon.datautils.AbstractDataUtilsServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,9 +25,9 @@ import org.slf4j.LoggerFactory;
 /**
  * Service to maintain synchronization properties for client->iRODS data
  * synchronization
- * 
+ *
  * @author Mike Conway - DICE (www.irods.org)
- * 
+ *
  */
 public class SynchPropertiesServiceImpl extends AbstractDataUtilsServiceImpl
 		implements SynchPropertiesService {
@@ -56,7 +56,7 @@ public class SynchPropertiesServiceImpl extends AbstractDataUtilsServiceImpl
 	/**
 	 * Constructor initializes dependencies. These can also be set after using
 	 * the default constructor.
-	 * 
+	 *
 	 * @param irodsAccessObjectFactory
 	 *            <code>IRODSAccessObjectFactory</code> that can create various
 	 *            access objects to interact with iRODS
@@ -117,10 +117,10 @@ public class SynchPropertiesServiceImpl extends AbstractDataUtilsServiceImpl
 		try {
 			AVUQueryElement avuQueryElement = AVUQueryElement
 					.instanceForValueQuery(AVUQueryPart.UNITS,
-							AVUQueryOperatorEnum.EQUAL, USER_SYNCH_DIR_TAG);
+							QueryConditionOperators.EQUAL, USER_SYNCH_DIR_TAG);
 			avuQuery.add(avuQueryElement);
 			avuQueryElement = AVUQueryElement.instanceForValueQuery(
-					AVUQueryPart.ATTRIBUTE, AVUQueryOperatorEnum.EQUAL,
+					AVUQueryPart.ATTRIBUTE, QueryConditionOperators.EQUAL,
 					userDevAttrib);
 			avuQuery.add(avuQueryElement);
 			queryResults = collectionAO
@@ -182,13 +182,13 @@ public class SynchPropertiesServiceImpl extends AbstractDataUtilsServiceImpl
 		try {
 			AVUQueryElement avuQueryElement = AVUQueryElement
 					.instanceForValueQuery(AVUQueryPart.UNITS,
-							AVUQueryOperatorEnum.EQUAL, USER_SYNCH_DIR_TAG);
+							QueryConditionOperators.EQUAL, USER_SYNCH_DIR_TAG);
 			avuQuery.add(avuQueryElement);
 			StringBuilder sb = new StringBuilder();
 			sb.append(userName);
 			sb.append(":%");
 			avuQueryElement = AVUQueryElement.instanceForValueQuery(
-					AVUQueryPart.ATTRIBUTE, AVUQueryOperatorEnum.LIKE,
+					AVUQueryPart.ATTRIBUTE, QueryConditionOperators.LIKE,
 					sb.toString());
 			avuQuery.add(avuQueryElement);
 			queryResults = collectionAO
@@ -215,7 +215,7 @@ public class SynchPropertiesServiceImpl extends AbstractDataUtilsServiceImpl
 	/**
 	 * Parse the synch directory AVU value for component values to build a
 	 * <code>UserSynchTarget</code> description.
-	 * 
+	 *
 	 * @param metaDataAndDomainData
 	 *            {@link MetaDataAndDomainData} from an AVU query
 	 * @return {@link UserSynchTarget} describing a synch relationship for this
@@ -463,7 +463,7 @@ public class SynchPropertiesServiceImpl extends AbstractDataUtilsServiceImpl
 		try {
 			List<AVUQueryElement> avuQueryElement = new ArrayList<AVUQueryElement>();
 			avuQueryElement.add(AVUQueryElement.instanceForValueQuery(
-					AVUQueryPart.ATTRIBUTE, AVUQueryOperatorEnum.EQUAL,
+					AVUQueryPart.ATTRIBUTE, QueryConditionOperators.EQUAL,
 					attribute));
 
 			List<MetaDataAndDomainData> metaDataAndDomainDataList = collectionAO
@@ -498,7 +498,7 @@ public class SynchPropertiesServiceImpl extends AbstractDataUtilsServiceImpl
 		try {
 			List<AVUQueryElement> avuQueryElement = new ArrayList<AVUQueryElement>();
 			avuQueryElement.add(AVUQueryElement.instanceForValueQuery(
-					AVUQueryPart.ATTRIBUTE, AVUQueryOperatorEnum.EQUAL,
+					AVUQueryPart.ATTRIBUTE, QueryConditionOperators.EQUAL,
 					attribute));
 
 			List<MetaDataAndDomainData> metaDataAndDomainDataList = collectionAO

@@ -21,9 +21,9 @@ import org.irods.jargon.core.pub.domain.ObjStat;
 import org.irods.jargon.core.pub.io.IRODSFile;
 import org.irods.jargon.core.query.AVUQueryElement;
 import org.irods.jargon.core.query.AVUQueryElement.AVUQueryPart;
-import org.irods.jargon.core.query.AVUQueryOperatorEnum;
 import org.irods.jargon.core.query.JargonQueryException;
 import org.irods.jargon.core.query.MetaDataAndDomainData;
+import org.irods.jargon.core.query.QueryConditionOperators;
 import org.irods.jargon.core.utils.MiscIRODSUtils;
 import org.irods.jargon.usertagging.AbstractIRODSTaggingService;
 import org.irods.jargon.usertagging.domain.IRODSStarredFileOrCollection;
@@ -258,7 +258,6 @@ public class IRODSStarringServiceImpl extends AbstractIRODSTaggingService
 		List<IRODSStarredFileOrCollection> irodsStarredFiles = new ArrayList<IRODSStarredFileOrCollection>();
 
 		// Do collections, then do files
-
 		log.info("querying metadata as a data object to look for starred");
 		DataObjectAO dataObjectAO = getIrodsAccessObjectFactory()
 				.getDataObjectAO(getIrodsAccount());
@@ -289,10 +288,10 @@ public class IRODSStarringServiceImpl extends AbstractIRODSTaggingService
 		List<AVUQueryElement> avuQueryElements = new ArrayList<AVUQueryElement>();
 		try {
 			avuQueryElements.add(AVUQueryElement.instanceForValueQuery(
-					AVUQueryPart.UNITS, AVUQueryOperatorEnum.EQUAL,
+					AVUQueryPart.UNITS, QueryConditionOperators.EQUAL,
 					UserTaggingConstants.STAR_AVU_UNIT));
 			avuQueryElements.add(AVUQueryElement.instanceForValueQuery(
-					AVUQueryPart.VALUE, AVUQueryOperatorEnum.EQUAL,
+					AVUQueryPart.VALUE, QueryConditionOperators.EQUAL,
 					getIrodsAccount().getUserName()));
 		} catch (JargonQueryException e) {
 			log.error("error on metadata query, rethrow as JargonException", e);
@@ -396,11 +395,16 @@ public class IRODSStarringServiceImpl extends AbstractIRODSTaggingService
 				metadataAndDomainData.getMetadataDomain(),
 				metadataAndDomainData.getDomainObjectUniqueName(),
 				metadataAndDomainData.getAvuAttribute(),
-				metadataAndDomainData.getAvuValue());
+				metadataAndDomainData.getAvuValue(),
+				metadataAndDomainData.getSize(),
+				metadataAndDomainData.getCreatedAt(),
+				metadataAndDomainData.getModifiedAt());
 
 		irodsStarredFileOrCollection.setCount(metadataAndDomainData.getCount());
 		irodsStarredFileOrCollection.setLastResult(metadataAndDomainData
 				.isLastResult());
+		log.debug("irodsStarredFileOrCollection:{}",
+				irodsStarredFileOrCollection);
 		return irodsStarredFileOrCollection;
 
 	}

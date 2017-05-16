@@ -1,5 +1,5 @@
-
 # Project: Jargon-core API
+<<<<<<< HEAD
 #### Date: 
 #### Release Version:
 #### git tag: 4.1.10.1-RC2
@@ -10,10 +10,26 @@
 4.1.10 Release compatability supporting issue 225: https://github.com/DICE-UNC/jargon/issues/225
 
 This includes support for pooling of iRODS connections targeting REST, WebDav, Cloud Browser
-
 =======
 
+### Date:
+### Release Version: 4.2.1.0-SNAPSHOT
+### git tag: 
+
+
+## News
+
+
+4.2.0 Compatability and maintenance
+for milestone: https://github.com/DICE-UNC/jargon/milestone/16
+>>>>>>> origin/development
+
+This version of Jargon is currently targeted at Cloud Browser and REST.  There are still some features that are considered early access and may not support a full range
+of use cases for general cases, and having a separate stream allows us flexibility to break API on these more advanced features, such as advanced paging and virtual collections support.
+
 Please go to [[https://github.com/DICE-UNC/jargon]] for the latest news and info.
+
+=======
 
 Jargon-core consists of the following libraries
 
@@ -24,12 +40,13 @@ Jargon-core consists of the following libraries
 * jargon-ticket - support for ticket processing
 * jargon-httpstream - stream http content into iRODS via Jargon
 * jargon-ruleservice - support for running and managing rules from interfaces
-
+* jargon-pool - initial implementation of commons-pool caching of iRODS agent connections.  This is initially for WebDav, and will be utilized as an option in REST and cloud browser.  Consider this code experimental
+ 
 ## Requirements
 
 * Jargon depends on Java 1.8+
 * Jargon is built using Apache Maven2, see POM for dependencies
-* Jargon supports iRODS 3.0 through iRODS 3.3.1 community, as well as iRODS 4.2.0 consortium
+* Jargon supports iRODS 4.1.0 through 4.2.X
 
 ## Libraries
 
@@ -39,6 +56,28 @@ Note that the following bug and feature requests are logged in GForge with relat
 
 ## Changes
 
+<<<<<<< HEAD
 ####  Add object pooling protocol manager #225 
 
 Test addition of commons-pool support for the protocol manager (this is considered experimental at this point)
+=======
+#### Remove old thumbnail code #165 
+
+Remove old image thumbnail code that relied on specific 'lifetime library' configuration.  This will later be replaced by a more globally applicable set of tools.  Likely in the jargon-extensions package
+
+####  Add file to string and vice versa to support cloud browser editor #166 
+
+Add file to string and vice versa in FileSamplerService of data utils.  This allows cloud browser to turn a file into an edit pane and store edits to irods.
+
+#### File save via cloud browser is deleting metadata #232
+
+Fix save of string to file (in Stream2StreamAO) to not delete a file when overwriting, so as to preserve metadata
+
+#### Add list user groups like x method #233
+
+Enhanced user group and user queries for cloud browser
+
+#### add col user type to genquery #235
+
+Add user type to LIKE queries to discriminate users from groups in find 'like' queries
+>>>>>>> origin/development

@@ -27,7 +27,7 @@ import org.irods.jargon.core.utils.MiscIRODSUtils;
  *
  */
 public class CollectionAndDataObjectListingEntry extends IRODSDomainObject
-implements Comparable<CollectionAndDataObjectListingEntry> {
+		implements Comparable<CollectionAndDataObjectListingEntry> {
 
 	/**
 	 * Analogous to objType_t defined in rodsType.h
@@ -38,6 +38,16 @@ implements Comparable<CollectionAndDataObjectListingEntry> {
 
 	private String parentPath = "";
 	private String pathOrName = "";
+	/**
+	 * Optional arbitrary string value that can contain a description or special
+	 * note. This can be useful for special types of collection listings
+	 */
+	private String description = "";
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
 	private String specialObjectPath = "";
 	private ObjectType objectType = null;
 	private Date createdAt = null;
@@ -148,15 +158,57 @@ implements Comparable<CollectionAndDataObjectListingEntry> {
 		return parentPath.hashCode() + pathOrName.hashCode();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString() {
-		String thisPath = pathOrName.substring(pathOrName.lastIndexOf('/') + 1);
-
-		if (thisPath.isEmpty()) {
-			thisPath = "/";
+		final int maxLen = 10;
+		StringBuilder builder = new StringBuilder();
+		builder.append("CollectionAndDataObjectListingEntry [");
+		if (parentPath != null) {
+			builder.append("parentPath=").append(parentPath).append(", ");
 		}
-
-		return thisPath;
+		if (pathOrName != null) {
+			builder.append("pathOrName=").append(pathOrName).append(", ");
+		}
+		if (description != null) {
+			builder.append("description=").append(description).append(", ");
+		}
+		if (specialObjectPath != null) {
+			builder.append("specialObjectPath=").append(specialObjectPath)
+					.append(", ");
+		}
+		if (objectType != null) {
+			builder.append("objectType=").append(objectType).append(", ");
+		}
+		if (createdAt != null) {
+			builder.append("createdAt=").append(createdAt).append(", ");
+		}
+		if (modifiedAt != null) {
+			builder.append("modifiedAt=").append(modifiedAt).append(", ");
+		}
+		builder.append("dataSize=").append(dataSize).append(", ");
+		if (ownerName != null) {
+			builder.append("ownerName=").append(ownerName).append(", ");
+		}
+		if (ownerZone != null) {
+			builder.append("ownerZone=").append(ownerZone).append(", ");
+		}
+		if (userFilePermission != null) {
+			builder.append("userFilePermission=")
+					.append(userFilePermission.subList(0,
+							Math.min(userFilePermission.size(), maxLen)))
+					.append(", ");
+		}
+		builder.append("id=").append(id).append(", ");
+		if (specColType != null) {
+			builder.append("specColType=").append(specColType);
+		}
+		builder.append("]");
+		return builder.toString();
 	}
 
 	/**
@@ -168,7 +220,7 @@ implements Comparable<CollectionAndDataObjectListingEntry> {
 	 * give the intended result if used to query the iCAT for information about
 	 * the file or collection.
 	 *
-	 * @return
+	 * @return <code>String</code> with the formatted path
 	 */
 	public String getFormattedAbsolutePath() {
 		StringBuilder sb = new StringBuilder();
@@ -197,7 +249,7 @@ implements Comparable<CollectionAndDataObjectListingEntry> {
 		String nodeVal;
 		if (objectType == ObjectType.COLLECTION) {
 			nodeVal = MiscIRODSUtils
-					.getLastPathComponentForGiveAbsolutePath(getPathOrName());
+					.getLastPathComponentForGivenAbsolutePath(getPathOrName());
 		} else {
 			nodeVal = pathOrName;
 		}
@@ -262,19 +314,19 @@ implements Comparable<CollectionAndDataObjectListingEntry> {
 	}
 
 	/**
-	 * @return the specColType {@link ObjStat.SpecColType} enum value that
-	 *         indicates if this is some type of special collection
+	 * @return the specColType {@link SpecColType} enum value that indicates if
+	 *         this is some type of special collection
 	 */
-	public ObjStat.SpecColType getSpecColType() {
+	public SpecColType getSpecColType() {
 		return specColType;
 	}
 
 	/**
 	 * @param specColType
-	 *            the specColType to set {@link ObjStat.SpecColType} enum value
-	 *            that indicates if this is some type of special collection
+	 *            the specColType to set {@link SpecColType} enum value that
+	 *            indicates if this is some type of special collection
 	 */
-	public void setSpecColType(final ObjStat.SpecColType specColType) {
+	public void setSpecColType(final SpecColType specColType) {
 		this.specColType = specColType;
 	}
 
@@ -294,5 +346,9 @@ implements Comparable<CollectionAndDataObjectListingEntry> {
 	 */
 	public void setSpecialObjectPath(final String specialObjectPath) {
 		this.specialObjectPath = specialObjectPath;
+	}
+
+	public String getDescription() {
+		return description;
 	}
 }
